@@ -2,3 +2,4 @@ roms/real
 .DS_Store
 .vscode/
 part*/build
+.vscode/settings.json

@@ -183,5 +183,6 @@ u8 cart_read(u16 address) {
 void cart_write(u16 address, u8 value) {
     // Normally writes to cartridge are used to control MBCs
     // For now we just ignore them
+    printf("cart_write: Unsupported write at %4.4X\n", address);
     NO_IMPL
 }
