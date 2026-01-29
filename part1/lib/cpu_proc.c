@@ -53,6 +53,16 @@ static void proc_ld(cpu_context* ctx) {
     cpu_set_reg(ctx->cur_inst->reg_1, ctx->fetched_data);
 }
 
+static void proc_ldh(cpu_context* ctx) {
+    if (ctx->cur_inst->reg_1 == RT_A) {
+        cpu_set_reg(ctx->cur_inst->reg_1, bus_read(0xFF00 | ctx->fetched_data));
+    } else {
+        bus_write(0xFF00 | ctx->fetched_data, ctx->regs.a);
+    }
+
+    emu_cycles(1);
+}
+
 static void proc_nop(cpu_context* ctx) {
     // do nothing
 }
@@ -101,6 +111,7 @@ IN_PROC processors[] = {
     [IN_JP] = proc_jp,
     [IN_DI] = proc_di,
     [IN_XOR] = proc_xor,
+    [IN_LDH] = proc_ldh
 };
 
 IN_PROC inst_get_processor(in_type type) {
