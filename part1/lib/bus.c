@@ -3,63 +3,60 @@
 #include <ram.h>
 #include <cpu.h>
 
-// 0x0000 - 0x3fff rom bank 0
-// 0x4000 - 0x7fff rom bank 1 - switchable
-// 0x8000 - 0x9fff chr ram
-// 0x9800 - 0x9bff bg map 1
-// 0x9c00 - 0x9fff bg map 2
-// 0xa000 - 0xbfff cartridge ram
-// 0xc000 - 0xcfff ram bank 0
-// 0xd000 - 0xdfff ram bank 1 - switchable - gbc only
-// 0xe000 - 0xfdff echo ram
-// 0xfe00 - 0xfe9f oam
-// 0xfea0 - 0xfeff not usable
-// 0xff00 - 0xff7f io registers
-// 0xff80 - 0xfffe zero page
+// 0x0000 - 0x3FFF : ROM Bank 0
+// 0x4000 - 0x7FFF : ROM Bank 1 - Switchable
+// 0x8000 - 0x97FF : CHR RAM
+// 0x9800 - 0x9BFF : BG Map 1
+// 0x9C00 - 0x9FFF : BG Map 2
+// 0xA000 - 0xBFFF : Cartridge RAM
+// 0xC000 - 0xCFFF : RAM Bank 0
+// 0xD000 - 0xDFFF : RAM Bank 1-7 - switchable - Color only
+// 0xE000 - 0xFDFF : Reserved - Echo RAM
+// 0xFE00 - 0xFE9F : Object Attribute Memory
+// 0xFEA0 - 0xFEFF : Reserved - Unusable
+// 0xFF00 - 0xFF7F : I/O Registers
+// 0xFF80 - 0xFFFE : Zero Page
 
 u8 bus_read(u16 address) {
     if (address < 0x8000) {
-        // rom data
+        //ROM Data
         return cart_read(address);
     } else if (address < 0xA000) {
-        // chr ram
-        printf("bus_read: Unsupported read at %4.4X\n", address);
+        //Char/Map Data
+        //TODO
+        printf("UNSUPPORTED bus_read(%04X)\n", address);
         NO_IMPL
     } else if (address < 0xC000) {
-        // cartridge ram
+        //Cartridge RAM
         return cart_read(address);
     } else if (address < 0xE000) {
-        // wram bank 0 and 1-7 switchable banks
+        //WRAM (Working RAM)
         return wram_read(address);
     } else if (address < 0xFE00) {
-        // echo ram
+        //reserved echo ram...
         return 0;
     } else if (address < 0xFEA0) {
-        // oam
-        printf("bus_read: Unsupported read at %4.4X\n", address);
+        //OAM
+        //TODO
+        printf("UNSUPPORTED bus_read(%04X)\n", address);
         NO_IMPL
     } else if (address < 0xFF00) {
-        // not usable
+        //reserved unusable...
         return 0;
     } else if (address < 0xFF80) {
-        // io registers
-        printf("bus_read: Unsupported read at %4.4X\n", address);
+        //IO Registers...
+        //TODO
+        printf("UNSUPPORTED bus_read(%04X)\n", address);
         NO_IMPL
-    // } else if (address < 0xFFFF) {
-    //     // zero page
-    //     NO_IMPL
-    // }
     } else if (address == 0xFFFF) {
-        // interrupt enable register
-        printf("bus_read: Unsupported read at %4.4X\n", address);
-        NO_IMPL
+        //CPU ENABLE REGISTER...
+        //TODO
+        return cpu_get_ie_register();
     }
 
-    // 0xFF80 to 0xFFFE higher ram
+    //NO_IMPL
     return hram_read(address);
-
 }
-
 
 void bus_write(u16 address, u8 value) {
     if (address < 0x8000) {
@@ -99,7 +96,6 @@ void bus_write(u16 address, u8 value) {
         hram_write(address, value);
     }
 }
-
 
 u16 bus_read16(u16 address) {
     u16 lo = bus_read(address);

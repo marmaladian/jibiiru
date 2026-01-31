@@ -169,20 +169,16 @@ bool cart_load(char *cart) {
     return true;
 }
 
-
 u8 cart_read(u16 address) {
-    if (address < ctx.rom_size) {
-        return ctx.rom_data[address];
-    }
+    //for now just ROM ONLY type supported...
 
-    printf("cart_read: Invalid read at %4.4X\n", address);
-    return 0xFF;
+    return ctx.rom_data[address];
 }
-
 
 void cart_write(u16 address, u8 value) {
-    // Normally writes to cartridge are used to control MBCs
-    // For now we just ignore them
-    printf("cart_write: Unsupported write at %4.4X\n", address);
+    //for now, ROM ONLY...
+
+    printf("cart_write(%04X)\n", address);
     NO_IMPL
 }
+

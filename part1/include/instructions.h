@@ -82,19 +82,19 @@ typedef enum {
     IN_EI,
     IN_RST,
     IN_ERR,
-    // cb instructions
-    IN_RLC,
+    //CB instructions...
+    IN_RLC, 
     IN_RRC,
-    IN_RL,
+    IN_RL, 
     IN_RR,
-    IN_SLA,
+    IN_SLA, 
     IN_SRA,
-    IN_SWAP,
+    IN_SWAP, 
     IN_SRL,
-    IN_BIT,
-    IN_RES,
+    IN_BIT, 
+    IN_RES, 
     IN_SET
-}  in_type;
+} in_type;
 
 typedef enum {
     CT_NONE, CT_NZ, CT_Z, CT_NC, CT_C
@@ -109,6 +109,6 @@ typedef struct {
     u8 param;
 } instruction;
 
-instruction* instruction_by_opcode(u8 opcode);
+instruction *instruction_by_opcode(u8 opcode);
 
-char* inst_name(in_type type);
+char *inst_name(in_type t);
